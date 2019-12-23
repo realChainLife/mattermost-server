@@ -53,6 +53,7 @@ const (
 	TRACK_PERMISSIONS_SYSTEM_SCHEME = "permissions_system_scheme"
 	TRACK_PERMISSIONS_TEAM_SCHEMES  = "permissions_team_schemes"
 	TRACK_ELASTICSEARCH             = "elasticsearch"
+	TRACK_GROUPS                    = "groups"
 
 	TRACK_ACTIVITY = "activity"
 	TRACK_LICENSE  = "license"
@@ -74,6 +75,7 @@ func (a *App) sendDailyDiagnostics(override bool) {
 		a.trackServer()
 		a.trackPermissions()
 		a.trackElasticsearch()
+		a.trackGroups()
 	}
 }
 
@@ -877,4 +879,16 @@ func (a *App) trackElasticsearch() {
 	}
 
 	a.SendDiagnostic(TRACK_ELASTICSEARCH, data)
+}
+
+func (a *App) trackGroups() {
+	var groupCount int
+	var groupTeamCounts []int
+	var groupChannelCounts []int
+
+	a.SendDiagnostic(TRACK_GROUPS, map[string]interface{}{
+		"group_count":          groupCount,
+		"group_team_counts":    groupTeamCounts,
+		"group_channel_counts": groupChannelCounts,
+	})
 }
